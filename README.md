@@ -33,7 +33,7 @@ Este repo ataca ambas con teoremas compilados y con chequeos automáticos.
 | `scripts/run_comparator.sh` | Receta para `comparator` completo con **nuestro** `Challenge.lean`. **No probada aquí** (necesita Linux y ~100 GB de RAM). |
 | `.github/workflows/audit.yml` | CI con los jobs `pin`, `build` (compila y comprueba axiomas), `release-scan` y `comparator` (opcional, self-hosted). |
 | `reference/` | `Statements.lean`, `Main.lean` y `lake-manifest.json` de la release, con SHA-256 verificado contra el archivo de alpo.ge. Además, `Challenge.lean` y `comparator.json` del montaje de Comparator (Deicyde / the-omega-institute), que **no** forman parte del archivo original. `Challenge.lean` importa solo `Mathlib`. |
-| `ANALISIS.md` | Informe detallado del riesgo de enunciado. |
+| `ANALISIS.md` / `ANALYSIS.md` | Informe detallado del riesgo de enunciado (español / inglés). |
 | `PETITION.md` | Propuesta (borrador, no enviada) para añadir estas equivalencias a Mathlib como tests de estabilidad. |
 
 ### Reproducir
@@ -91,7 +91,7 @@ This repository addresses both with compiled theorems and automated checks.
 | `scripts/run_comparator.sh` | Recipe for a full `comparator` run with **our own** `Challenge.lean`. **Untested here** (needs Linux and ~100 GB RAM). |
 | `.github/workflows/audit.yml` | CI with jobs `pin`, `build` (compile + axiom check), `release-scan`, and `comparator` (optional, self-hosted). |
 | `reference/` | The release's `Statements.lean`, `Main.lean` and `lake-manifest.json`, SHA-256-checked against the alpo.ge archive. Also `Challenge.lean` and `comparator.json` from the Comparator setup (Deicyde / the-omega-institute), which are **not** part of the original archive. `Challenge.lean` imports only `Mathlib`. |
-| `ANALISIS.md` | Detailed statement-risk report (Spanish). |
+| `ANALYSIS.md` | Detailed statement-risk report (English; Spanish original in `ANALISIS.md`). |
 | `PETITION.md` | Proposal (draft, not submitted) to add these equivalences to Mathlib as statement-stability tests. |
 
 ### Reproduce
@@ -111,7 +111,7 @@ python3 scripts/check_pin.py --online
 * `check_pin.py --online`: **PASS**. Finding: the pinned commit is **not an ancestor of Mathlib `master`**
   (`diverged`). It is the official tag `v4.33.1`: one "bump toolchain" commit that only touches
   `lean-toolchain`.
-* `scan_release.py` (all 175,187 release `.lean` files, tamnd mirror `54f24d40`): **PASS**, 0 hard flags. There are 2 harmless `LFunction` homonyms in other namespaces. See `ANALISIS.md` §8.
+* `scan_release.py` (all 175,187 release `.lean` files, tamnd mirror `54f24d40`): **PASS**, 0 hard flags. There are 2 harmless `LFunction` homonyms in other namespaces. See `ANALYSIS.md` §8.
 * **Not run:** the full `comparator` (needs ~100 GB RAM). GitHub CI (run 45687557153, ubuntu): `pin`, `build` (8710 jobs, axioms PASS) and
   `release-scan` (175,187 files, PASS) all **green**; `comparator` skipped (optional).
 
