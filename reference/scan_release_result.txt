@@ -1,4 +1,4 @@
-source: git object store at HEAD of C:/Users/24/AppData/Local/Temp/claude/4fb531e1812876e2/6d3c5c33-c5d3-42d8-8e82-369012b549f0/scratchpad/release
+source: git object store at HEAD of a local clone of https://github.com/tamnd/riemann-lean (commit 54f24d40f22dda515b978dfacfb3164991d30317)
 ok    src/Statements.lean imports only Mathlib
 scanned 175187 .lean files
 ok    lakefile git requirements: ['https://github.com/leanprover-community/mathlib4']

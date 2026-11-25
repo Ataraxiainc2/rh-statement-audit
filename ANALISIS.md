@@ -1,5 +1,7 @@
 # Análisis del riesgo de enunciado: `RiemannHypothesis` en la release de Alpöge
 
+> Prueba anunciada por **Levent Alpöge** (Anthropic; Junior Fellow, Harvard Society of Fellows) el 20-nov-2026 en <https://alpo.ge/remark.pdf>, escrita, según el anuncio, trabajando con Claude. Este informe es una auditoría independiente del **enunciado**, no de la prueba, y no está afiliado al autor. Se preparó con ayuda de IA (Claude Code).
+
 **Fecha:** 25-nov-2026 · **Entorno verificado:** Lean `v4.33.1`, Mathlib `0df444a360eaa60ab8c11dca51a86af692955474`
 (= tag oficial `v4.33.1` de Mathlib), el mismo que fija el `lake-manifest.json` de la release (SHA-256
 `fee57ee9…4774`, idéntico al del archivo `lean.tar.gz` de alpo.ge según el manifiesto por fichero de

@@ -1,6 +1,10 @@
 # rh-statement-audit
 
-[Español](#español) · [English](#english)
+[Español](#español) · [English](#english) · [Créditos / Credits](#créditos--credits)
+
+> Auditoría independiente del **enunciado** formal. No es una prueba, no es un informe de arbitraje y no
+> está afiliada al autor ni a Anthropic. / An independent audit of the formal **statement**. It is not a proof,
+> not a referee report, and not affiliated with the author or with Anthropic.
 
 ---
 
@@ -118,3 +122,37 @@ python3 scripts/check_pin.py --online
 * Mathlib's basic notions (`HasSum`, `cpow`, `AnalyticOnNhd`) and the kernel are trusted.
 * The `build` job uses the Mathlib cache by default. To avoid trusting it, dispatch the workflow manually with
   `from_source: true`.
+
+---
+
+## Créditos / Credits
+
+**La prueba / The proof.** Levent Alpöge (Anthropic; Junior Fellow, Harvard Society of Fellows), anunciada el
+20-nov-2026 en la nota de cuatro páginas <https://alpo.ge/remark.pdf>, escrita, según el anuncio, trabajando
+con Claude. La prueba se publicó solo como formalización en Lean, en el archivo `lean.tar.gz` (partes en
+alpo.ge), SHA-256 `9631b4f020199e580ba86178cb56c6e9b09f690c2369a80dc4334aa93f49c7fc`.
+/ Announced on 2026-11-20 in the four-page note above, written, per the announcement, working with Claude.
+The proof was released only as a Lean formalization (archive and hash as above).
+
+**Lo que usa este repo / What this repo builds on.**
+* Mathlib (`v4.33.1`): definiciones y lemas de ζ de D. Loeffler y otros. / ζ definitions and lemmas by
+  D. Loeffler et al.
+* `reference/Challenge.lean` y `comparator.json`: montaje de Comparator de Deicyde / the-omega-institute.
+  / Comparator setup by Deicyde / the-omega-institute.
+* Hashes por fichero del archivo / per-file archive hashes: tamnd/riemann-lean.
+* `leanprover/comparator` (Lean FRO).
+* Las equivalencias de franja y de caracterización ya las había enunciado C. Toledo (cert-machine,
+  21-nov-2026) en el mismo pin. Este repo las reproduce de forma independiente y añade la forma con η, la
+  exactitud de los ceros triviales y los chequeos de entorno. / The strip-form and characterization
+  equivalences were stated earlier by C. Toledo (cert-machine, 2026-11-21) at the same pin. This repo
+  reproduces them independently and adds the η form, exactness of the trivial zeros, and the environment
+  checks.
+
+**Transparencia / Transparency.** Este repositorio se preparó con ayuda de IA (Claude Code), bajo la
+dirección y la responsabilidad de su propietario. Todo lo que afirma está respaldado por código que compila
+(`lake build`, CI) o por fuentes enlazadas. / This repository was prepared with AI assistance (Claude Code),
+under the direction and responsibility of its owner. Every claim is backed by compiling code (`lake build`,
+CI) or by linked sources.
+
+**Licencia / License.** Apache-2.0 (como Mathlib / like Mathlib). Los ficheros de `reference/` pertenecen a
+sus autores. / Files in `reference/` belong to their authors.
