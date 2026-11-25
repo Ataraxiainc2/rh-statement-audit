@@ -1,0 +1,108 @@
+name: statement-audit
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      from_source:
+        description: "Build Mathlib from source instead of trusting `lake exe cache get` (slow, ~2-4 h)"
+        type: boolean
+        default: false
+      run_comparator:
+        description: "Run the full comparator against the Alpöge release (needs a self-hosted runner labelled rh-big: >=100 GB RAM, >=200 GB disk, Linux x86-64)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+env:
+  RELEASE_MIRROR: https://github.com/tamnd/riemann-lean
+  # Commit of the byte-exact mirror whose per-file SHA-256 manifest matches alpo.ge lean.tar.gz
+  RELEASE_MIRROR_REV: 54f24d40f22dda515b978dfacfb3164991d30317
+
+jobs:
+  # 1. Pin check: toolchain + manifest identical to the release, Mathlib = upstream tag v4.33.1.
+  pin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check pin (offline + GitHub API)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/check_pin.py --online
+
+  # 2. Build the anchors and check axioms.
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install elan
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o elan-init.sh
+          bash elan-init.sh -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Fetch Mathlib (cache)
+        if: ${{ !inputs.from_source }}
+        run: lake exe cache get
+      - name: Fetch Mathlib (no cache; will build from source)
+        if: ${{ inputs.from_source }}
+        run: lake resolve-deps   # clones the pinned revs from lake-manifest.json; never updates them
+      - name: Pin check incl. local Mathlib checkout (HEAD + clean tree + source text)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/check_pin.py --online
+      - name: lake build
+        run: lake build 2>&1 | tee build.log
+      - name: No sorry / no warnings about sorry
+        run: |
+          if grep -n "declaration uses 'sorry'" build.log; then echo "sorry found"; exit 1; fi
+      - name: Axiom check
+        run: python3 scripts/check_axioms.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: build-log
+          path: build.log
+
+  # 3. Static red-flag scan of the release source + hashes of the statement files.
+  release-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch release mirror at pinned commit
+        run: |
+          git init release && cd release
+          git remote add origin "$RELEASE_MIRROR"
+          git fetch --depth 1 origin "$RELEASE_MIRROR_REV"
+          git checkout --quiet FETCH_HEAD
+      - name: Verify the mirror against its archive manifest (all files)
+        working-directory: release
+        run: sha256sum --quiet -c manifests/files.sha256
+      - name: Statement files are the ones vendored in reference/
+        run: |
+          diff <(sed 's/\r$//' reference/Statements.lean) release/lean/src/Statements.lean
+          diff <(sed 's/\r$//' reference/Main.lean) release/lean/src/Main.lean
+          diff <(sed 's/\r$//' reference/alpoge-lake-manifest.json) release/lean/lake-manifest.json
+      - name: Red-flag scan
+        run: python3 -I scripts/scan_release.py release/lean
+
+  # 4. OPTIONAL full comparator run (self-hosted, manual). Untested in this repository: the
+  #    author's machine (64 GB RAM, Windows) cannot run it. See README.
+  comparator:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_comparator }}
+    runs-on: [self-hosted, linux, x64, rh-big]
+    timeout-minutes: 4320
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch release mirror
+        run: |
+          rm -rf release && git init release && cd release
+          git remote add origin "$RELEASE_MIRROR"
+          git fetch --depth 1 origin "$RELEASE_MIRROR_REV"
+          git checkout --quiet FETCH_HEAD
+          sha256sum --quiet -c manifests/files.sha256
+      - name: Add trusted Challenge (Mathlib-only) and comparator config
+        run: bash scripts/run_comparator.sh release/lean

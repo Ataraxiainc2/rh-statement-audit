@@ -1,0 +1,18 @@
+source: git object store at HEAD of C:/Users/24/AppData/Local/Temp/claude/4fb531e1812876e2/6d3c5c33-c5d3-42d8-8e82-369012b549f0/scratchpad/release
+ok    src/Statements.lean imports only Mathlib
+scanned 175187 .lean files
+ok    lakefile git requirements: ['https://github.com/leanprover-community/mathlib4']
+
+SOFT flags (informational):
+  homonym (other namespace)      2   e.g. ['GodementJacquet.LFunction @ src/GroundTheory/AutomorphicForms/GL2/GJLocalZeta.lean', 'HeckeCharacter.LFunction @ src/GroundTheory/GlobalFields/TateThesis/HeckeLFunction.lean']
+  export (other)                38   e.g. ['src/Development/AbelianVarietyTheory/Definitions/Degenerations/PullChartIsLB.lean', 'src/Development/AbelianVarietyTheory/Definitions/Divisors/EntireEqOfHalfPlane.lean', 'src/Development/AbelianVarietyTheory/Definitions/Divisors/EntireEqOfHalfPlane.lean']
+  unsafe                         0
+  implemented_by                 0
+  extern                         0
+  run_cmd/run_elab               5   e.g. ['src/BuildAid/D1.lean', 'src/BuildAid/D2.lean', 'src/BuildAid/D3.lean']
+  elab/macro_rules               4   e.g. ['src/Formalism/HermitianCurvature/HermitianCurvatureProofs/CutCptCopy.lean', 'src/Formalism/LocalToGlobal/IndefiniteReal/HeckeNonvanishing/Imports.lean', 'src/Formalism/LocalToGlobal/NumberFieldFamilies/OwnStruct.lean']
+
+HARD flags:
+  none
+
+RESULT: PASS
