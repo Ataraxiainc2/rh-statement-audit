@@ -49,8 +49,8 @@ python3 scripts/check_pin.py --online
 * `check_pin.py --online`: **PASS**. Hallazgo: el commit fijado **no es ancestro de `master`** de Mathlib
   (`diverged`). Es el tag oficial `v4.33.1`: un único commit «bump toolchain» que solo toca `lean-toolchain`.
 * `scan_release.py` (los 175 187 `.lean` de la release, espejo tamnd `54f24d40`): **PASS**, 0 flags duros. Hay 2 homónimos `LFunction` en otros espacios de nombres, inocuos. Ver `ANALISIS.md` §8.
-* **No ejecutado:** `comparator` completo (requiere ~100 GB de RAM). Tampoco la CI en GitHub en el momento de
-  escribir esto: ver la pestaña Actions.
+* **No ejecutado:** `comparator` completo (requiere ~100 GB de RAM). CI de GitHub (run 45687557153, ubuntu): `pin`, `build` (8710 jobs, axiomas PASS)
+  y `release-scan` (175 187 ficheros, PASS) en **verde**. `comparator` se omitió, porque es opcional.
 
 ### Límites
 
@@ -108,8 +108,8 @@ python3 scripts/check_pin.py --online
   (`diverged`). It is the official tag `v4.33.1`: one "bump toolchain" commit that only touches
   `lean-toolchain`.
 * `scan_release.py` (all 175,187 release `.lean` files, tamnd mirror `54f24d40`): **PASS**, 0 hard flags. There are 2 harmless `LFunction` homonyms in other namespaces. See `ANALISIS.md` §8.
-* **Not run:** the full `comparator` (needs ~100 GB RAM). The GitHub CI had not run at the time of writing:
-  see the Actions tab.
+* **Not run:** the full `comparator` (needs ~100 GB RAM). GitHub CI (run 45687557153, ubuntu): `pin`, `build` (8710 jobs, axioms PASS) and
+  `release-scan` (175,187 files, PASS) all **green**; `comparator` skipped (optional).
 
 ### Limits
 
